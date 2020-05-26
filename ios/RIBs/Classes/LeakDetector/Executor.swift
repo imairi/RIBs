@@ -14,9 +14,10 @@
 //  limitations under the License.
 //
 
+import Combine
 import Dispatch
 import Foundation
-import RxSwift
+//import RxSwift
 
 public class Executor {
 
@@ -36,25 +37,68 @@ public class Executor {
         var lastRunLoopTime = Date().timeIntervalSinceReferenceDate
         var properFrameTime = 0.0
         var didExecute = false
-        _ = Observable<Int>
-            .timer(DispatchTimeInterval.milliseconds(0), period: period, scheduler: MainScheduler.instance)
-            .takeWhile { _ in
-                !didExecute
-            }
-            .subscribe(onNext: { _ in
+        
+        
+        var result: Double = 0
+
+        switch period {
+        case .seconds(let value):
+            result = Double(value)
+        case .milliseconds(let value):
+            result = Double(value)*0.001
+        case .microseconds(let value):
+            result = Double(value)*0.000001
+        case .nanoseconds(let value):
+            result = Double(value)*0.000000001
+        case .never:
+            result = 0
+        @unknown default:
+            result = 0
+        }
+        
+        _ = Timer.publish(every: result, on: .main, in: .default)
+            .sink(receiveCompletion: { a in
+                print(a)
+            }) { _ in
+                guard !didExecute else {
+                    return
+                }
+                
                 let currentTime = Date().timeIntervalSinceReferenceDate
                 let trueElapsedTime = currentTime - lastRunLoopTime
                 lastRunLoopTime = currentTime
-
+                
                 // If we did drop frame, we under-count the frame duration, which is fine. It
                 // just means the logic is performed slightly later.
                 let boundedElapsedTime = min(trueElapsedTime, Double(maxFrameDuration) / 1000)
                 properFrameTime += boundedElapsedTime
                 if properFrameTime > delay {
                     didExecute = true
-
+                    
                     logic()
                 }
-            })
+        }
+        
+            
+//        _ = Observable<Int>
+//            .timer(DispatchTimeInterval.milliseconds(0), period: period, scheduler: MainScheduler.instance)
+//            .takeWhile { _ in
+//                !didExecute
+//            }
+//            .subscribe(onNext: { _ in
+//                let currentTime = Date().timeIntervalSinceReferenceDate
+//                let trueElapsedTime = currentTime - lastRunLoopTime
+//                lastRunLoopTime = currentTime
+//
+//                // If we did drop frame, we under-count the frame duration, which is fine. It
+//                // just means the logic is performed slightly later.
+//                let boundedElapsedTime = min(trueElapsedTime, Double(maxFrameDuration) / 1000)
+//                properFrameTime += boundedElapsedTime
+//                if properFrameTime > delay {
+//                    didExecute = true
+//
+//                    logic()
+//                }
+//            })
     }
 }
