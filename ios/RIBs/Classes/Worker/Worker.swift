@@ -14,6 +14,7 @@
 //  limitations under the License.
 //
 
+import Combine
 import RxSwift
 
 /// The base protocol of all workers that perform a self-contained piece of logic.
@@ -129,14 +130,17 @@ open class Worker: Working {
 
     private let isStartedSubject = BehaviorSubject<Bool>(value: false)
     fileprivate var disposable: CompositeDisposable?
-    private var interactorBindingDisposable: Disposable?
+//    private var interactorBindingDisposable: Disposable?
+    private var interactorBindingCancellable: Cancellable?
 
     private func bind(to interactorScope: InteractorScope) {
         unbindInteractor()
 
-        interactorBindingDisposable = interactorScope.isActiveStream
-            .subscribe(onNext: { [weak self] (isInteractorActive: Bool) in
-                if isInteractorActive {
+        interactorBindingCancellable = interactorScope.isActiveStream
+            .sink(receiveCompletion: { (a) in
+                print(a)
+            }, receiveValue: { [weak self] isInteractorActive in
+               if isInteractorActive {
                     if self?.isStarted == true {
                         self?.executeStart(interactorScope)
                     }
@@ -144,6 +148,16 @@ open class Worker: Working {
                     self?.executeStop()
                 }
             })
+        
+//            .subscribe(onNext: { [weak self] (isInteractorActive: Bool) in
+//                if isInteractorActive {
+//                    if self?.isStarted == true {
+//                        self?.executeStart(interactorScope)
+//                    }
+//                } else {
+//                    self?.executeStop()
+//                }
+//            })
     }
 
     private func executeStart(_ interactorScope: InteractorScope) {
@@ -163,8 +177,10 @@ open class Worker: Working {
     }
 
     private func unbindInteractor() {
-        interactorBindingDisposable?.dispose()
-        interactorBindingDisposable = nil
+        interactorBindingCancellable?.cancel()
+        interactorBindingCancellable = nil
+//        interactorBindingDisposable?.dispose()
+//        interactorBindingDisposable = nil
     }
 
     deinit {
@@ -207,8 +223,12 @@ fileprivate class WeakInteractorScope: InteractorScope {
         return sourceScope?.isActive ?? false
     }
 
-    var isActiveStream: Observable<Bool> {
-        return sourceScope?.isActiveStream ?? Observable.just(false)
+//    var isActiveStream: Observable<Bool> {
+//        return sourceScope?.isActiveStream ?? Observable.just(false)
+//    }
+    
+    var isActiveStream: AnyPublisher<Bool, Error> {
+        return sourceScope?.isActiveStream ?? Just(false).setFailureType(to: Error.self)    .eraseToAnyPublisher()
     }
 
     fileprivate init(sourceScope: InteractorScope) {
