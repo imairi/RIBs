@@ -70,6 +70,7 @@ public class LeakDetector {
                     return LeakDetectionStatus.DidComplete
                 }
             })
+            .removeDuplicates()
             .eraseToAnyPublisher()
     }
 //    public var status: Observable<LeakDetectionStatus> {

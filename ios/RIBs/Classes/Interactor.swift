@@ -84,7 +84,7 @@ open class Interactor: Interactable {
 //    }
     
     public final var isActiveStream: AnyPublisher<Bool, Error> {
-        return isActivePassthroughSubject.eraseToAnyPublisher()
+        return isActiveCurrentValueSubject.removeDuplicates().eraseToAnyPublisher()
     }
 
     /// Initializer.
@@ -152,7 +152,7 @@ open class Interactor: Interactable {
 
 //    private let isActiveSubject = BehaviorSubject<Bool>(value: false)
     private let isActiveCurrentValueSubject = CurrentValueSubject<Bool, Error>.init(false)
-    private let isActivePassthroughSubject = PassthroughSubject<Bool, Error>.init()
+//    private let isActivePassthroughSubject = PassthroughSubject<Bool, Error>.init()
 //    fileprivate var activenessDisposable: CompositeDisposable?
     fileprivate var activenessCancellable = [Cancellable]()
 

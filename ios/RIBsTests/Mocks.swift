@@ -14,9 +14,10 @@
 //  limitations under the License.
 //
 
+import Combine
 import RIBs
-import RxRelay
-import RxSwift
+//import RxRelay
+//import RxSwift
 import UIKit
 
 class WindowMock: UIWindow {
@@ -49,22 +50,28 @@ class InteractorMock: Interactable {
         return active.value
     }
 
-    var isActiveStream: Observable<Bool> {
-        return active.asObservable()
+//    var isActiveStream: Observable<Bool> {
+//        return active.asObservable()
+//    }
+    var isActiveStream: AnyPublisher<Bool, Error> {
+        return active.eraseToAnyPublisher()
     }
 
-    private let active = BehaviorRelay<Bool>(value: false)
+//    private let active = BehaviorRelay<Bool>(value: false)
+    private let active = CurrentValueSubject<Bool, Error>.init(false)
 
     init() {}
 
     // MARK: - Lifecycle
 
     func activate() {
-        active.accept(true)
+//        active.accept(true)
+        active.send(true)
     }
 
     func deactivate() {
-        active.accept(false)
+//        active.accept(false)
+        active.send(false)
     }
 }
 
@@ -72,9 +79,13 @@ class InteractableMock: Interactable {
     // Variables
     var isActive: Bool = false { didSet { isActiveSetCallCount += 1 } }
     var isActiveSetCallCount = 0
-    var isActiveStreamSubject: PublishSubject<Bool> = PublishSubject<Bool>() { didSet { isActiveStreamSubjectSetCallCount += 1 } }
+//    var isActiveStreamSubject: PublishSubject<Bool> = PublishSubject<Bool>() { didSet { isActiveStreamSubjectSetCallCount += 1 } }
+    var isActiveStreamSubject = PassthroughSubject<Bool, Error>.init() { didSet { isActiveStreamSubjectSetCallCount += 1 } }
     var isActiveStreamSubjectSetCallCount = 0
-    var isActiveStream: Observable<Bool> { return isActiveStreamSubject }
+//    var isActiveStream: Observable<Bool> { return isActiveStreamSubject }
+    var isActiveStream: AnyPublisher<Bool, Error> {
+        return isActiveStreamSubject.eraseToAnyPublisher()
+    }
 
     // Function Handlers
     var activateHandler: (() -> ())?

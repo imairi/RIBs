@@ -15,21 +15,23 @@
 //
 
 import XCTest
-import RxSwift
+import Combine
+//import RxSwift
 @testable import RIBs
 
 final class WorkerTests: XCTestCase {
 
     private var worker: TestWorker!
     private var interactor: InteractorMock!
-    private var disposable: DisposeBag!
+//    private var disposable: DisposeBag!
+    private var cancellables = [Cancellable]()
 
     // MARK: - Setup
 
     override func setUp() {
         super.setUp()
 
-        disposable = DisposeBag()
+//        disposable = DisposeBag()
 
         worker = TestWorker()
         interactor = InteractorMock()
@@ -85,25 +87,47 @@ final class WorkerTests: XCTestCase {
     }
 
     func test_start_stop_lifecycle() {
-        worker.isStartedStream
-            .take(1)
-            .subscribe(onNext: { XCTAssertFalse($0) })
-            .disposed(by: disposable)
+        let cancellable1 = worker.isStartedStream
+            .prefix(1)
+            .sink(receiveCompletion: { _ in
+                
+            }) {
+                XCTAssertFalse($0)
+        }
+//            .take(1)
+//            .subscribe(onNext: { XCTAssertFalse($0) })
+//            .disposed(by: disposable)
+        cancellables.append(cancellable1)
 
         interactor.activate()
         worker.start(interactor)
 
-        worker.isStartedStream
-            .take(1)
-            .subscribe(onNext: { XCTAssertTrue($0) })
-            .disposed(by: disposable)
+        let cancellable2 = worker.isStartedStream
+            .prefix(1)
+            .sink(receiveCompletion: { _ in
+                
+            }) {
+                XCTAssertTrue($0)
+        }
+//            .take(1)
+//            .subscribe(onNext: { XCTAssertTrue($0) })
+//            .disposed(by: disposable)
+        cancellables.append(cancellable2)
 
         worker.stop()
 
-        worker.isStartedStream
-            .take(1)
-            .subscribe(onNext: { XCTAssertFalse($0) })
-            .disposed(by: disposable)
+        let cancellable3 = worker.isStartedStream
+            .prefix(1)
+            .sink(receiveCompletion: { _ in
+                
+            }) {
+                XCTAssertFalse($0)
+        }
+//            .take(1)
+//            .subscribe(onNext: { XCTAssertFalse($0) })
+//            .disposed(by: disposable)
+        
+        cancellables.append(cancellable3)
     }
 }
 

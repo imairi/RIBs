@@ -14,14 +14,16 @@
 //  limitations under the License.
 //
 
-import RxSwift
+import Combine
+//import RxSwift
 import XCTest
 @testable import RIBs
 
 final class RouterTests: XCTestCase {
 
     private var router: Router<Interactable>!
-    private var lifecycleDisposable: Disposable!
+//    private var lifecycleDisposable: Disposable!
+    private var lifecycleCancellable: Cancellable!
 
     // MARK: - Setup
 
@@ -34,7 +36,8 @@ final class RouterTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        lifecycleDisposable.dispose()
+//        lifecycleDisposable.dispose()
+        lifecycleCancellable.cancel()
     }
 
     // MARK: - Tests
@@ -42,14 +45,23 @@ final class RouterTests: XCTestCase {
     func test_load_verifyLifecycleObservable() {
         var currentLifecycle: RouterLifecycle?
         var didComplete = false
-        lifecycleDisposable = router
+        lifecycleCancellable = router
             .lifecycle
-            .subscribe(onNext: { lifecycle in
-                currentLifecycle = lifecycle
-            }, onCompleted: {
+            .sink(receiveCompletion: { _ in
                 currentLifecycle = nil
                 didComplete = true
+            }, receiveValue: { lifecycle in
+                currentLifecycle = lifecycle
             })
+        
+//        lifecycleDisposable = router
+//            .lifecycle
+//            .subscribe(onNext: { lifecycle in
+//                currentLifecycle = lifecycle
+//            }, onCompleted: {
+//                currentLifecycle = nil
+//                didComplete = true
+//            })
 
         XCTAssertNil(currentLifecycle)
         XCTAssertFalse(didComplete)
