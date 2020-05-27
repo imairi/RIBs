@@ -138,7 +138,7 @@ open class Worker: Working {
 //    private let isStartedSubject = BehaviorSubject<Bool>(value: false)
     private let isStartedSubject = CurrentValueSubject<Bool, Error>.init(false)
 //    fileprivate var disposable: CompositeDisposable?
-    fileprivate var cancellables = [Cancellable]()
+    fileprivate var cancellables: [Cancellable]?
 //    private var interactorBindingDisposable: Disposable?
     private var interactorBindingCancellable: Cancellable?
 
@@ -181,6 +181,10 @@ open class Worker: Working {
 //        }
 
 //        disposable.dispose()
+        
+        guard let cancellables = cancellables else {
+            return
+        }
         cancellables.forEach { cancellable in
             cancellable.cancel()
         }
@@ -244,13 +248,20 @@ public extension Cancellable {
     /// - parameter worker: The `Worker` to dispose the subscription based on.
     @discardableResult
     func disposeOnStop(_ worker: Worker) -> Cancellable {
-        worker.cancellables.append(self)
 //        if let compositeDisposable = worker.disposable {
 //            _ = compositeDisposable.insert(self)
 //        } else {
 //            dispose()
 //            print("Subscription immediately terminated, since \(worker) is stopped.")
 //        }
+        
+        
+        guard worker.cancellables != nil else {
+            cancel()
+            print("Subscription immediately terminated, since \(worker) is stopped.")
+            return self
+        }
+        worker.cancellables?.append(self)
         return self
     }
 }
