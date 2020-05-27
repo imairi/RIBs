@@ -15,7 +15,7 @@
 //
 
 import Combine
-import RxSwift
+//import RxSwift
 
 /// The base protocol of all workers that perform a self-contained piece of logic.
 ///
@@ -43,7 +43,8 @@ public protocol Working: class {
     ///
     /// Subscription to this stream always immediately returns the last event. This stream terminates after the
     /// `Worker` is deallocated.
-    var isStartedStream: Observable<Bool> { get }
+//    var isStartedStream: Observable<Bool> { get }
+    var isStartedStream: AnyPublisher<Bool, Error> { get }
 }
 
 /// The base `Worker` implementation.
@@ -51,18 +52,22 @@ open class Worker: Working {
 
     /// Indicates if the `Worker` is started.
     public final var isStarted: Bool {
-        do {
-            return try isStartedSubject.value()
-        } catch {
-            return false
-        }
+        return isStartedSubject.value
+//        do {
+//            return try isStartedSubject.value()
+//        } catch {
+//            return false
+//        }
     }
 
     /// The lifecycle stream of this `Worker`.
-    public final var isStartedStream: Observable<Bool> {
-        return isStartedSubject
-            .asObservable()
-            .distinctUntilChanged()
+//    public final var isStartedStream: Observable<Bool> {
+//        return isStartedSubject
+//            .asObservable()
+//            .distinctUntilChanged()
+//    }
+    public final var isStartedStream: AnyPublisher<Bool, Error> {
+        return isStartedSubject.removeDuplicates().eraseToAnyPublisher()
     }
 
     /// Initializer.
@@ -83,7 +88,8 @@ open class Worker: Working {
 
         stop()
 
-        isStartedSubject.onNext(true)
+//        isStartedSubject.onNext(true)
+        isStartedSubject.send(true)
 
         // Create a separate scope struct to avoid passing the given scope instance, since usually
         // the given instance is the interactor itself. If the interactor holds onto the worker without
@@ -110,7 +116,8 @@ open class Worker: Working {
             return
         }
 
-        isStartedSubject.onNext(false)
+//        isStartedSubject.onNext(false)
+        isStartedSubject.send(false)
 
         executeStop()
     }
@@ -128,8 +135,10 @@ open class Worker: Working {
 
     // MARK: - Private
 
-    private let isStartedSubject = BehaviorSubject<Bool>(value: false)
-    fileprivate var disposable: CompositeDisposable?
+//    private let isStartedSubject = BehaviorSubject<Bool>(value: false)
+    private let isStartedSubject = CurrentValueSubject<Bool, Error>.init(false)
+//    fileprivate var disposable: CompositeDisposable?
+    fileprivate var cancellables = [Cancellable]()
 //    private var interactorBindingDisposable: Disposable?
     private var interactorBindingCancellable: Cancellable?
 
@@ -161,17 +170,22 @@ open class Worker: Working {
     }
 
     private func executeStart(_ interactorScope: InteractorScope) {
-        disposable = CompositeDisposable()
+//        disposable = CompositeDisposable()
+        cancellables = [Cancellable]()
         didStart(interactorScope)
     }
 
     private func executeStop() {
-        guard let disposable = disposable else {
-            return
-        }
+//        guard let disposable = disposable else {
+//            return
+//        }
 
-        disposable.dispose()
-        self.disposable = nil
+//        disposable.dispose()
+        cancellables.forEach { cancellable in
+            cancellable.cancel()
+        }
+//        self.disposable = nil
+        self.cancellables = [Cancellable]()
 
         didStop()
     }
@@ -186,12 +200,37 @@ open class Worker: Working {
     deinit {
         stop()
         unbindInteractor()
-        isStartedSubject.onCompleted()
+//        isStartedSubject.onCompleted()
+        isStartedSubject.send(completion: .finished)
     }
 }
 
 /// Worker related `Disposable` extensions.
-public extension Disposable {
+//public extension Disposable {
+//
+//    /// Disposes the subscription based on the lifecycle of the given `Worker`. The subscription is disposed when the
+//    /// `Worker` is stopped.
+//    ///
+//    /// If the given worker is stopped at the time this method is invoked, the subscription is immediately terminated.
+//    ///
+//    /// - note: When using this composition, the subscription closure may freely retain the `Worker` itself, since the
+//    ///   subscription closure is disposed once the `Worker` is stopped, thus releasing the retain cycle before the
+//    ///   `worker` needs to be deallocated.
+//    ///
+//    /// - parameter worker: The `Worker` to dispose the subscription based on.
+//    @discardableResult
+//    func disposeOnStop(_ worker: Worker) -> Disposable {
+//        if let compositeDisposable = worker.disposable {
+//            _ = compositeDisposable.insert(self)
+//        } else {
+//            dispose()
+//            print("Subscription immediately terminated, since \(worker) is stopped.")
+//        }
+//        return self
+//    }
+//}
+
+public extension Cancellable {
 
     /// Disposes the subscription based on the lifecycle of the given `Worker`. The subscription is disposed when the
     /// `Worker` is stopped.
@@ -204,13 +243,14 @@ public extension Disposable {
     ///
     /// - parameter worker: The `Worker` to dispose the subscription based on.
     @discardableResult
-    func disposeOnStop(_ worker: Worker) -> Disposable {
-        if let compositeDisposable = worker.disposable {
-            _ = compositeDisposable.insert(self)
-        } else {
-            dispose()
-            print("Subscription immediately terminated, since \(worker) is stopped.")
-        }
+    func disposeOnStop(_ worker: Worker) -> Cancellable {
+        worker.cancellables.append(self)
+//        if let compositeDisposable = worker.disposable {
+//            _ = compositeDisposable.insert(self)
+//        } else {
+//            dispose()
+//            print("Subscription immediately terminated, since \(worker) is stopped.")
+//        }
         return self
     }
 }
