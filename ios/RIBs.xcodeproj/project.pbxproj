@@ -32,6 +32,10 @@
 		AF9966B21FC40D7E00CAEAA2 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF9966B11FC40D7E00CAEAA2 /* RxSwift.framework */; };
 		AFB7D4031FC81C8F00045D2B /* Foundation+ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF82F6731FC81B5F006DF7BC /* Foundation+ExtensionsTests.swift */; };
 		AFB7D4051FC81D6100045D2B /* LaunchRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB7D4041FC81D6100045D2B /* LaunchRouterTests.swift */; };
+		B92518F1247F355000294849 /* ComponentizedBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92518EF247F355000294849 /* ComponentizedBuilder.swift */; };
+		B92518F2247F355000294849 /* MultiStageComponentizedBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92518F0247F355000294849 /* MultiStageComponentizedBuilder.swift */; };
+		B92518F5247F356400294849 /* ComponentizedBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92518F3247F356400294849 /* ComponentizedBuilderTests.swift */; };
+		B92518F6247F356400294849 /* MultiStageComponentizedBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92518F4247F356400294849 /* MultiStageComponentizedBuilderTests.swift */; };
 		BF5FC0F122808377004235F1 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF5FC0F022808377004235F1 /* RxRelay.framework */; };
 /* End PBXBuildFile section */
 
@@ -74,6 +78,10 @@
 		AF90B4181FBA1F8400920384 /* WorkflowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowTests.swift; sourceTree = "<group>"; };
 		AF9966B11FC40D7E00CAEAA2 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		AFB7D4041FC81D6100045D2B /* LaunchRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRouterTests.swift; sourceTree = "<group>"; };
+		B92518EF247F355000294849 /* ComponentizedBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentizedBuilder.swift; sourceTree = "<group>"; };
+		B92518F0247F355000294849 /* MultiStageComponentizedBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStageComponentizedBuilder.swift; sourceTree = "<group>"; };
+		B92518F3247F356400294849 /* ComponentizedBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentizedBuilderTests.swift; sourceTree = "<group>"; };
+		B92518F4247F356400294849 /* MultiStageComponentizedBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStageComponentizedBuilderTests.swift; sourceTree = "<group>"; };
 		BF5FC0F022808377004235F1 /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = ../Carthage/Build/iOS/RxRelay.framework; sourceTree = "<group>"; };
 		E8E789432378AD000043E59E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -102,6 +110,8 @@
 		4121671B1F8C5BDC00371904 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				B92518EF247F355000294849 /* ComponentizedBuilder.swift */,
+				B92518F0247F355000294849 /* MultiStageComponentizedBuilder.swift */,
 				413177291F8EEFF0005F08F0 /* Builder.swift */,
 				413177221F8EEFEF005F08F0 /* Interactor.swift */,
 				413177261F8EEFEF005F08F0 /* LaunchRouter.swift */,
@@ -194,6 +204,8 @@
 		8B9882EF1F86E1CF00ABE009 /* RIBsTests */ = {
 			isa = PBXGroup;
 			children = (
+				B92518F3247F356400294849 /* ComponentizedBuilderTests.swift */,
+				B92518F4247F356400294849 /* MultiStageComponentizedBuilderTests.swift */,
 				8B9882F21F86E1CF00ABE009 /* Info.plist */,
 				AFB7D4041FC81D6100045D2B /* LaunchRouterTests.swift */,
 				AF90B40B1FBA157700920384 /* Mocks.swift */,
@@ -386,6 +398,7 @@
 				418C175C1F97F19F003C03F7 /* Component.swift in Sources */,
 				4131773D1F8EF98A005F08F0 /* Foundation+Extensions.swift in Sources */,
 				4131772E1F8EF5FF005F08F0 /* LaunchRouter.swift in Sources */,
+				B92518F2247F355000294849 /* MultiStageComponentizedBuilder.swift in Sources */,
 				413177391F8EF70F005F08F0 /* Executor.swift in Sources */,
 				413177341F8EF602005F08F0 /* Worker.swift in Sources */,
 				418C175D1F97F1A1003C03F7 /* Dependency.swift in Sources */,
@@ -393,6 +406,7 @@
 				413177321F8EF5FF005F08F0 /* ViewableRouter.swift in Sources */,
 				413177351F8EF605005F08F0 /* Workflow.swift in Sources */,
 				4131772F1F8EF5FF005F08F0 /* PresentableInteractor.swift in Sources */,
+				B92518F1247F355000294849 /* ComponentizedBuilder.swift in Sources */,
 				4131772C1F8EF5FF005F08F0 /* Builder.swift in Sources */,
 				413177331F8EF5FF005F08F0 /* ViewControllable.swift in Sources */,
 				413177311F8EF5FF005F08F0 /* Router.swift in Sources */,
@@ -405,8 +419,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AFB7D4031FC81C8F00045D2B /* Foundation+ExtensionsTests.swift in Sources */,
+				B92518F6247F356400294849 /* MultiStageComponentizedBuilderTests.swift in Sources */,
 				AF90B4111FBA185E00920384 /* ComponentTests.swift in Sources */,
 				AFB7D4051FC81D6100045D2B /* LaunchRouterTests.swift in Sources */,
+				B92518F5247F356400294849 /* ComponentizedBuilderTests.swift in Sources */,
 				AF90B4141FBA18DB00920384 /* WorkerTests.swift in Sources */,
 				AF90B4191FBA1F8500920384 /* WorkflowTests.swift in Sources */,
 				AF90B40A1FBA14DB00920384 /* RouterTests.swift in Sources */,
