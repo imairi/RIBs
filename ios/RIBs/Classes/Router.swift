@@ -40,7 +40,7 @@ public protocol Routing: RouterScope {
     // base class logic without error.
 
     /// The base interactable associated with this `Router`.
-    var interactable: Interactable { get }
+//    var interactable: Interactable { get }
 
     /// The list of children routers of this `Router`.
     var children: [Routing] { get }
@@ -76,10 +76,10 @@ public protocol Routing: RouterScope {
 open class Router<InteractorType>: Routing {
 
     /// The corresponding `Interactor` owned by this `Router`.
-    public let interactor: InteractorType
+//    public let interactor: InteractorType
 
     /// The base `Interactable` associated with this `Router`.
-    public let interactable: Interactable
+//    public let interactable: Interactable
 
     /// The list of children `Router`s of this `Router`.
     public final var children: [Routing] = []
@@ -94,12 +94,19 @@ open class Router<InteractorType>: Routing {
     /// Initializer.
     ///
     /// - parameter interactor: The corresponding `Interactor` of this `Router`.
-    public init(interactor: InteractorType) {
-        self.interactor = interactor
-        guard let interactable = interactor as? Interactable else {
-            fatalError("\(interactor) should conform to \(Interactable.self)")
-        }
-        self.interactable = interactable
+//    public init(interactor: InteractorType) {
+//        self.interactor = interactor
+//        guard let interactable = interactor as? Interactable else {
+//            fatalError("\(interactor) should conform to \(Interactable.self)")
+//        }
+//        self.interactable = interactable
+//    }
+    public init() {
+//        self.interactor = interactor
+//        guard let interactable = interactor as? Interactable else {
+//            fatalError("\(interactor) should conform to \(Interactable.self)")
+//        }
+//        self.interactable = interactable
     }
 
     /// Loads the `Router`.
@@ -137,7 +144,7 @@ open class Router<InteractorType>: Routing {
 
         // Activate child first before loading. Router usually attaches immutable children in didLoad.
         // We need to make sure the RIB is activated before letting it attach immutable children.
-        child.interactable.activate()
+//        child.interactable.activate()
         child.load()
     }
 
@@ -145,7 +152,7 @@ open class Router<InteractorType>: Routing {
     ///
     /// - parameter child: The child `Router` to detach.
     public final func detachChild(_ child: Routing) {
-        child.interactable.deactivate()
+//        child.interactable.deactivate()
 
         children.removeElementByReference(child)
     }
@@ -166,35 +173,35 @@ open class Router<InteractorType>: Routing {
 
     private func bindSubtreeActiveState() {
 
-        let disposable = interactable.isActiveStream
-            // Do not retain self here to guarantee execution. Retaining self will cause the dispose bag
-            // to never be disposed, thus self is never deallocated. Also cannot just store the disposable
-            // and call dispose(), since we want to keep the subscription alive until deallocation, in
-            // case the router is re-attached. Using weak does require the router to be retained until its
-            // interactor is deactivated.
-            .subscribe(onNext: { [weak self] (isActive: Bool) in
-                // When interactor becomes active, we are attached to parent, otherwise we are detached.
-                self?.setSubtreeActive(isActive)
-            })
-        _ = deinitDisposable.insert(disposable)
+//        let disposable = interactable.isActiveStream
+//            // Do not retain self here to guarantee execution. Retaining self will cause the dispose bag
+//            // to never be disposed, thus self is never deallocated. Also cannot just store the disposable
+//            // and call dispose(), since we want to keep the subscription alive until deallocation, in
+//            // case the router is re-attached. Using weak does require the router to be retained until its
+//            // interactor is deactivated.
+//            .subscribe(onNext: { [weak self] (isActive: Bool) in
+//                // When interactor becomes active, we are attached to parent, otherwise we are detached.
+//                self?.setSubtreeActive(isActive)
+//            })
+//        _ = deinitDisposable.insert(disposable)
     }
 
-    private func setSubtreeActive(_ active: Bool) {
-
-        if active {
-            iterateSubtree(self) { router in
-                if !router.interactable.isActive {
-                    router.interactable.activate()
-                }
-            }
-        } else {
-            iterateSubtree(self) { router in
-                if router.interactable.isActive {
-                    router.interactable.deactivate()
-                }
-            }
-        }
-    }
+//    private func setSubtreeActive(_ active: Bool) {
+//
+//        if active {
+//            iterateSubtree(self) { router in
+//                if !router.interactable.isActive {
+//                    router.interactable.activate()
+//                }
+//            }
+//        } else {
+//            iterateSubtree(self) { router in
+//                if router.interactable.isActive {
+//                    router.interactable.deactivate()
+//                }
+//            }
+//        }
+//    }
 
     private func iterateSubtree(_ root: Routing, closure: (_ node: Routing) -> ()) {
         closure(root)
@@ -212,7 +219,7 @@ open class Router<InteractorType>: Routing {
     }
 
     deinit {
-        interactable.deactivate()
+//        interactable.deactivate()
 
         if !children.isEmpty {
             detachAllChildren()
@@ -222,6 +229,6 @@ open class Router<InteractorType>: Routing {
 
         deinitDisposable.dispose()
 
-        LeakDetector.instance.expectDeallocate(object: interactable)
+//        LeakDetector.instance.expectDeallocate(object: interactable)
     }
 }

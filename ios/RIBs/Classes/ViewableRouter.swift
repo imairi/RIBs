@@ -52,7 +52,8 @@ open class ViewableRouter<InteractorType, ViewControllerType>: Router<Interactor
         }
         self.viewControllable = viewControllable
 
-        super.init(interactor: interactor)
+//        super.init(interactor: interactor)
+        super.init()
     }
 
     // MARK: - Internal
@@ -68,25 +69,25 @@ open class ViewableRouter<InteractorType, ViewControllerType>: Router<Interactor
     private var viewControllerDisappearExpectation: LeakDetectionHandle?
 
     private func setupViewControllerLeakDetection() {
-        let disposable = interactable.isActiveStream
-            // Do not retain self here to guarantee execution. Retaining self will cause the dispose bag to never be
-            // disposed, thus self is never deallocated. Also cannot just store the disposable and call dispose(),
-            // since we want to keep the subscription alive until deallocation, in case the router is re-attached.
-            // Using weak does require the router to be retained until its interactor is deactivated.
-            .subscribe(onNext: { [weak self] (isActive: Bool) in
-                guard let strongSelf = self else {
-                    return
-                }
-
-                strongSelf.viewControllerDisappearExpectation?.cancel()
-                strongSelf.viewControllerDisappearExpectation = nil
-
-                if !isActive {
-                    let viewController = strongSelf.viewControllable.uiviewController
-                    strongSelf.viewControllerDisappearExpectation = LeakDetector.instance.expectViewControllerDisappear(viewController: viewController)
-                }
-            })
-        _ = deinitDisposable.insert(disposable)
+//        let disposable = interactable.isActiveStream
+//            // Do not retain self here to guarantee execution. Retaining self will cause the dispose bag to never be
+//            // disposed, thus self is never deallocated. Also cannot just store the disposable and call dispose(),
+//            // since we want to keep the subscription alive until deallocation, in case the router is re-attached.
+//            // Using weak does require the router to be retained until its interactor is deactivated.
+//            .subscribe(onNext: { [weak self] (isActive: Bool) in
+//                guard let strongSelf = self else {
+//                    return
+//                }
+//
+//                strongSelf.viewControllerDisappearExpectation?.cancel()
+//                strongSelf.viewControllerDisappearExpectation = nil
+//
+//                if !isActive {
+//                    let viewController = strongSelf.viewControllable.uiviewController
+//                    strongSelf.viewControllerDisappearExpectation = LeakDetector.instance.expectViewControllerDisappear(viewController: viewController)
+//                }
+//            })
+//        _ = deinitDisposable.insert(disposable)
     }
 
     deinit {

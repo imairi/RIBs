@@ -43,7 +43,7 @@ open class LaunchRouter<InteractorType, ViewControllerType>: ViewableRouter<Inte
         window.rootViewController = viewControllable.uiviewController
         window.makeKeyAndVisible()
 
-        interactable.activate()
+//        interactable.activate()
         load()
     }
 }
