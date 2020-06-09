@@ -43,7 +43,6 @@ open class ViewableRouter<ViewControllerType>: Router, ViewableRouting {
 
     /// Initializer.
     ///
-    /// - parameter interactor: The corresponding `Interactor` of this `Router`.
     /// - parameter viewController: The corresponding `ViewController` of this `Router`.
     public init(viewController: ViewControllerType) {
         self.viewController = viewController
@@ -51,44 +50,18 @@ open class ViewableRouter<ViewControllerType>: Router, ViewableRouting {
             fatalError("\(viewController) should conform to \(ViewControllable.self)")
         }
         self.viewControllable = viewControllable
-
-//        super.init(interactor: interactor)
         super.init()
     }
 
     // MARK: - Internal
 
     override func internalDidLoad() {
-        setupViewControllerLeakDetection()
-
         super.internalDidLoad()
     }
 
     // MARK: - Private
 
     private var viewControllerDisappearExpectation: LeakDetectionHandle?
-
-    private func setupViewControllerLeakDetection() {
-//        let disposable = interactable.isActiveStream
-//            // Do not retain self here to guarantee execution. Retaining self will cause the dispose bag to never be
-//            // disposed, thus self is never deallocated. Also cannot just store the disposable and call dispose(),
-//            // since we want to keep the subscription alive until deallocation, in case the router is re-attached.
-//            // Using weak does require the router to be retained until its interactor is deactivated.
-//            .subscribe(onNext: { [weak self] (isActive: Bool) in
-//                guard let strongSelf = self else {
-//                    return
-//                }
-//
-//                strongSelf.viewControllerDisappearExpectation?.cancel()
-//                strongSelf.viewControllerDisappearExpectation = nil
-//
-//                if !isActive {
-//                    let viewController = strongSelf.viewControllable.uiviewController
-//                    strongSelf.viewControllerDisappearExpectation = LeakDetector.instance.expectViewControllerDisappear(viewController: viewController)
-//                }
-//            })
-//        _ = deinitDisposable.insert(disposable)
-    }
 
     deinit {
         LeakDetector.instance.expectDeallocate(object: viewControllable.uiviewController, inTime: LeakDefaultExpectationTime.viewDisappear)

@@ -42,8 +42,6 @@ open class LaunchRouter<ViewControllerType>: ViewableRouter<ViewControllerType>,
     public final func launch(from window: UIWindow) {
         window.rootViewController = viewControllable.uiviewController
         window.makeKeyAndVisible()
-
-//        interactable.activate()
         load()
     }
 }

@@ -74,13 +74,6 @@ public protocol Routing: RouterScope {
 ///
 /// Routers should always use helper builders to instantiate children routers.
 open class Router: Routing {
-
-    /// The corresponding `Interactor` owned by this `Router`.
-//    public let interactor: InteractorType
-
-    /// The base `Interactable` associated with this `Router`.
-//    public let interactable: Interactable
-
     /// The list of children `Router`s of this `Router`.
     public final var children: [Routing] = []
 
@@ -92,21 +85,7 @@ open class Router: Routing {
     }
 
     /// Initializer.
-    ///
-    /// - parameter interactor: The corresponding `Interactor` of this `Router`.
-//    public init(interactor: InteractorType) {
-//        self.interactor = interactor
-//        guard let interactable = interactor as? Interactable else {
-//            fatalError("\(interactor) should conform to \(Interactable.self)")
-//        }
-//        self.interactable = interactable
-//    }
     public init() {
-//        self.interactor = interactor
-//        guard let interactable = interactor as? Interactable else {
-//            fatalError("\(interactor) should conform to \(Interactable.self)")
-//        }
-//        self.interactable = interactable
     }
 
     /// Loads the `Router`.
@@ -144,7 +123,6 @@ open class Router: Routing {
 
         // Activate child first before loading. Router usually attaches immutable children in didLoad.
         // We need to make sure the RIB is activated before letting it attach immutable children.
-//        child.interactable.activate()
         child.load()
     }
 
@@ -152,8 +130,6 @@ open class Router: Routing {
     ///
     /// - parameter child: The child `Router` to detach.
     public final func detachChild(_ child: Routing) {
-//        child.interactable.deactivate()
-
         children.removeElementByReference(child)
     }
 
@@ -162,7 +138,6 @@ open class Router: Routing {
     let deinitDisposable = CompositeDisposable()
 
     func internalDidLoad() {
-        bindSubtreeActiveState()
         lifecycleSubject.onNext(.didLoad)
     }
 
@@ -170,38 +145,6 @@ open class Router: Routing {
 
     private let lifecycleSubject = PublishSubject<RouterLifecycle>()
     private var didLoadFlag: Bool = false
-
-    private func bindSubtreeActiveState() {
-
-//        let disposable = interactable.isActiveStream
-//            // Do not retain self here to guarantee execution. Retaining self will cause the dispose bag
-//            // to never be disposed, thus self is never deallocated. Also cannot just store the disposable
-//            // and call dispose(), since we want to keep the subscription alive until deallocation, in
-//            // case the router is re-attached. Using weak does require the router to be retained until its
-//            // interactor is deactivated.
-//            .subscribe(onNext: { [weak self] (isActive: Bool) in
-//                // When interactor becomes active, we are attached to parent, otherwise we are detached.
-//                self?.setSubtreeActive(isActive)
-//            })
-//        _ = deinitDisposable.insert(disposable)
-    }
-
-//    private func setSubtreeActive(_ active: Bool) {
-//
-//        if active {
-//            iterateSubtree(self) { router in
-//                if !router.interactable.isActive {
-//                    router.interactable.activate()
-//                }
-//            }
-//        } else {
-//            iterateSubtree(self) { router in
-//                if router.interactable.isActive {
-//                    router.interactable.deactivate()
-//                }
-//            }
-//        }
-//    }
 
     private func iterateSubtree(_ root: Routing, closure: (_ node: Routing) -> ()) {
         closure(root)
@@ -219,8 +162,6 @@ open class Router: Routing {
     }
 
     deinit {
-//        interactable.deactivate()
-
         if !children.isEmpty {
             detachAllChildren()
         }
@@ -228,7 +169,5 @@ open class Router: Routing {
         lifecycleSubject.onCompleted()
 
         deinitDisposable.dispose()
-
-//        LeakDetector.instance.expectDeallocate(object: interactable)
     }
 }

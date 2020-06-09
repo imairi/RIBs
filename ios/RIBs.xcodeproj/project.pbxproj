@@ -8,15 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4131772C1F8EF5FF005F08F0 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177291F8EEFF0005F08F0 /* Builder.swift */; };
-		4131772D1F8EF5FF005F08F0 /* Interactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177221F8EEFEF005F08F0 /* Interactor.swift */; };
 		4131772E1F8EF5FF005F08F0 /* LaunchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177261F8EEFEF005F08F0 /* LaunchRouter.swift */; };
-		4131772F1F8EF5FF005F08F0 /* PresentableInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177231F8EEFEF005F08F0 /* PresentableInteractor.swift */; };
 		413177301F8EF5FF005F08F0 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177251F8EEFEF005F08F0 /* Presenter.swift */; };
 		413177311F8EF5FF005F08F0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177271F8EEFEF005F08F0 /* Router.swift */; };
 		413177321F8EF5FF005F08F0 /* ViewableRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177241F8EEFEF005F08F0 /* ViewableRouter.swift */; };
 		413177331F8EF5FF005F08F0 /* ViewControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177281F8EEFEF005F08F0 /* ViewControllable.swift */; };
-		413177341F8EF602005F08F0 /* Worker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131772B1F8EEFF0005F08F0 /* Worker.swift */; };
-		413177351F8EF605005F08F0 /* Workflow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177211F8EEFEF005F08F0 /* Workflow.swift */; };
 		413177391F8EF70F005F08F0 /* Executor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177371F8EF70A005F08F0 /* Executor.swift */; };
 		4131773A1F8EF711005F08F0 /* LeakDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413177381F8EF70A005F08F0 /* LeakDetector.swift */; };
 		4131773D1F8EF98A005F08F0 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4131773C1F8EF98A005F08F0 /* Foundation+Extensions.swift */; };
@@ -46,16 +42,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		413177211F8EEFEF005F08F0 /* Workflow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workflow.swift; sourceTree = "<group>"; };
-		413177221F8EEFEF005F08F0 /* Interactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactor.swift; sourceTree = "<group>"; };
-		413177231F8EEFEF005F08F0 /* PresentableInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableInteractor.swift; sourceTree = "<group>"; };
 		413177241F8EEFEF005F08F0 /* ViewableRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewableRouter.swift; sourceTree = "<group>"; };
 		413177251F8EEFEF005F08F0 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		413177261F8EEFEF005F08F0 /* LaunchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchRouter.swift; sourceTree = "<group>"; };
 		413177271F8EEFEF005F08F0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		413177281F8EEFEF005F08F0 /* ViewControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllable.swift; sourceTree = "<group>"; };
 		413177291F8EEFF0005F08F0 /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
-		4131772B1F8EEFF0005F08F0 /* Worker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Worker.swift; sourceTree = "<group>"; };
 		413177371F8EF70A005F08F0 /* Executor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Executor.swift; sourceTree = "<group>"; };
 		413177381F8EF70A005F08F0 /* LeakDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeakDetector.swift; sourceTree = "<group>"; };
 		4131773C1F8EF98A005F08F0 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
@@ -103,9 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				413177291F8EEFF0005F08F0 /* Builder.swift */,
-				413177221F8EEFEF005F08F0 /* Interactor.swift */,
 				413177261F8EEFEF005F08F0 /* LaunchRouter.swift */,
-				413177231F8EEFEF005F08F0 /* PresentableInteractor.swift */,
 				413177251F8EEFEF005F08F0 /* Presenter.swift */,
 				413177271F8EEFEF005F08F0 /* Router.swift */,
 				413177241F8EEFEF005F08F0 /* ViewableRouter.swift */,
@@ -113,26 +103,8 @@
 				418C17551F97DB0E003C03F7 /* DI */,
 				4131773B1F8EF981005F08F0 /* Extensions */,
 				413177361F8EF70A005F08F0 /* LeakDetector */,
-				4131772A1F8EEFF0005F08F0 /* Worker */,
-				413177201F8EEFEF005F08F0 /* Workflow */,
 			);
 			path = Classes;
-			sourceTree = "<group>";
-		};
-		413177201F8EEFEF005F08F0 /* Workflow */ = {
-			isa = PBXGroup;
-			children = (
-				413177211F8EEFEF005F08F0 /* Workflow.swift */,
-			);
-			path = Workflow;
-			sourceTree = "<group>";
-		};
-		4131772A1F8EEFF0005F08F0 /* Worker */ = {
-			isa = PBXGroup;
-			children = (
-				4131772B1F8EEFF0005F08F0 /* Worker.swift */,
-			);
-			path = Worker;
 			sourceTree = "<group>";
 		};
 		413177361F8EF70A005F08F0 /* LeakDetector */ = {
@@ -387,12 +359,8 @@
 				4131773D1F8EF98A005F08F0 /* Foundation+Extensions.swift in Sources */,
 				4131772E1F8EF5FF005F08F0 /* LaunchRouter.swift in Sources */,
 				413177391F8EF70F005F08F0 /* Executor.swift in Sources */,
-				413177341F8EF602005F08F0 /* Worker.swift in Sources */,
 				418C175D1F97F1A1003C03F7 /* Dependency.swift in Sources */,
-				4131772D1F8EF5FF005F08F0 /* Interactor.swift in Sources */,
 				413177321F8EF5FF005F08F0 /* ViewableRouter.swift in Sources */,
-				413177351F8EF605005F08F0 /* Workflow.swift in Sources */,
-				4131772F1F8EF5FF005F08F0 /* PresentableInteractor.swift in Sources */,
 				4131772C1F8EF5FF005F08F0 /* Builder.swift in Sources */,
 				413177331F8EF5FF005F08F0 /* ViewControllable.swift in Sources */,
 				413177311F8EF5FF005F08F0 /* Router.swift in Sources */,
