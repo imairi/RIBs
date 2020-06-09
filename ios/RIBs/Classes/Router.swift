@@ -73,7 +73,7 @@ public protocol Routing: RouterScope {
 /// Router drives the lifecycle of its owned `Interactor`.
 ///
 /// Routers should always use helper builders to instantiate children routers.
-open class Router<InteractorType>: Routing {
+open class Router: Routing {
 
     /// The corresponding `Interactor` owned by this `Router`.
 //    public let interactor: InteractorType

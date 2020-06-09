@@ -26,14 +26,14 @@ public protocol LaunchRouting: ViewableRouting {
 }
 
 /// The application root router base class, that acts as the root of the router tree.
-open class LaunchRouter<InteractorType, ViewControllerType>: ViewableRouter<InteractorType, ViewControllerType>, LaunchRouting {
+open class LaunchRouter<ViewControllerType>: ViewableRouter<ViewControllerType>, LaunchRouting {
 
     /// Initializer.
     ///
     /// - parameter interactor: The corresponding `Interactor` of this `Router`.
     /// - parameter viewController: The corresponding `ViewController` of this `Router`.
-    public override init(interactor: InteractorType, viewController: ViewControllerType) {
-        super.init(interactor: interactor, viewController: viewController)
+    public override init(viewController: ViewControllerType) {
+        super.init(viewController: viewController)
     }
 
     /// Launches the router tree.
