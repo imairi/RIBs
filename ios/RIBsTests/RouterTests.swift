@@ -20,7 +20,7 @@ import XCTest
 
 final class RouterTests: XCTestCase {
 
-    private var router: Router<Interactable>!
+    private var router: Router!
     private var lifecycleDisposable: Disposable!
 
     // MARK: - Setup
@@ -28,7 +28,7 @@ final class RouterTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        router = Router(interactor: InteractableMock())
+        router = Router()
     }
 
     override func tearDown() {
